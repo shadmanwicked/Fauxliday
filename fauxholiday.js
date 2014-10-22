@@ -21,7 +21,7 @@ var adj = "";
 
 var corpus = "1000";
 
-var getNounURL =    "http://api.wordnik.com:80/v4/words.json/randomWord?" +
+var getNounURL = "http://api.wordnik.com:80/v4/words.json/randomWord?" +
     "hasDictionaryDef=false" +
     "&includePartOfSpeech=noun" +
     "&excludePartOfSpeech=proper-noun,proper-noun-plural,proper-noun-posessive,suffix,family-name,idiom,affix" +
@@ -32,6 +32,7 @@ var getNounURL =    "http://api.wordnik.com:80/v4/words.json/randomWord?" +
     "&maxDictionaryCount=-1" +
     "&minLength=5" +
     "&maxLength=-1" +
+    "&api_key=" +
     wordnikKey;
 
 var getAdjURL = "http://api.wordnik.com:80/v4/words.json/randomWord?" +
@@ -45,6 +46,7 @@ var getAdjURL = "http://api.wordnik.com:80/v4/words.json/randomWord?" +
     "&maxDictionaryCount=-1" +
     "&minLength=5" +
     "&maxLength=-1" +
+    "&api_key=" +
     wordnikKey;
 
 var getVerbURL = "http://api.wordnik.com:80/v4/words.json/randomWord?" +
@@ -58,12 +60,15 @@ var getVerbURL = "http://api.wordnik.com:80/v4/words.json/randomWord?" +
     "&maxDictionaryCount=-1" +
     "&minLength=5" +
     "&maxLength=-1" +
+    "&api_key=" +
     wordnikKey;
 
 
 function makeHoliday() {
     restClient.get(getNounURL, function (data,response) {
 
+        //console.log(getNounURL);
+        //console.log(data);
         obj = JSON.parse(data);
         noun = obj.word;
         noun = noun[0].toUpperCase() + noun.slice(1);
@@ -85,7 +90,7 @@ function makeHoliday() {
                 console.log("the verb is " + verb);
 
                     holiday = "TODAY is International " + adj + /*" " + verb + */" " + noun + " day!";
-                    switch(getRandomInt(0,6)){
+                    switch(getRandomInt(0,8)){
                         case 0:
                             holiday = "TODAY is International " + adj + /*" " + verb + */" " + noun + " day!";
                             break;
@@ -103,6 +108,12 @@ function makeHoliday() {
                             break;
                         case 5:
                             holiday = "TODAY is " + adj + " " + verb + " " + noun + " day!";
+                            break;
+                        case 6:
+                            holiday = "TODAY is Local " + adj + " " + verb + " " + noun + " day!";
+                            break;
+                        case 7:
+                            holiday = "TODAY is Local " + adj + /*" " + verb + */" " + noun + " day!";
                             break;
                     }
                     //get the date
@@ -122,7 +133,7 @@ function makeHoliday() {
                 		console.log("This tweet has a length of " + holiday.length);
 
                 		//Tweet it!
-                		T.post('statuses/update', {status: holiday}, function (err, reply) {});
+//                		T.post('statuses/update', {status: holiday}, function (err, reply) {});
                 	}
                 	else{
                 		makeHoliday();
